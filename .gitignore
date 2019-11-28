@@ -102,3 +102,8 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Output directory and data files
+output/
+data/gdb9*
+data/*.gz
