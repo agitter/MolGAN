@@ -1,4 +1,6 @@
+import argparse
 import tensorflow as tf
+import numpy as np
 
 from utils.sparse_molecular_dataset import SparseMolecularDataset
 from utils.trainer import Trainer
@@ -9,18 +11,34 @@ from models import encoder_rgcn, decoder_adj, decoder_dot, decoder_rnn
 
 from optimizers.gan import GraphGANOptimizer
 
-batch_dim = 128
-la = 1
-dropout = 0
-n_critic = 5
-metric = 'validity,sas'
-n_samples = 5000
-z_dim = 8
-epochs = 10
-save_every = None
+parser = argparse.ArgumentParser(description='MolGAN training parameters and data. Can be run using default parameters.')
+parser.add_argument("--batch-dim", type=int, default=128)
+parser.add_argument("--la", type=int, default=1)
+parser.add_argument("--dropout", type=float, default=0)
+parser.add_argument("--n-critic", type=int, default=5)
+parser.add_argument("--metric", type=str, default='validity,sas', help='See "reward" function for valid options.')
+parser.add_argument("--n-samples", type=int, default=5000)
+parser.add_argument("--z-dim", type=int, default=8)
+parser.add_argument("--epochs", type=int, default=10)
+parser.add_argument("--save-every", type=int, default=1)
+parser.add_argument("--output", type=str, default='./output')
+parser.add_argument("--data", type=str, default='data/gdb9_9nodes.sparsedataset')
+
+args = parser.parse_args()
+
+batch_dim = args.batch_dim
+la = args.la
+dropout = args.dropout
+n_critic = args.n_critic
+metric = args.metric
+n_samples = args.n_samples
+z_dim = args.z_dim
+epochs = args.epochs
+save_every = args.save_every
+out_dir = args.output
 
 data = SparseMolecularDataset()
-data.load('data/gdb9_9nodes.sparsedataset')
+data.load(args.data)
 
 steps = (len(data) // batch_dim)
 
@@ -209,6 +227,6 @@ trainer.train(batch_dim=batch_dim,
               test_fetch_dict=test_fetch_dict,
               test_feed_dict=test_feed_dict,
               save_every=save_every,
-              directory='', # here users need to first create and then specify a folder where to save the model
+              directory=out_dir, # here users need to first create and then specify a folder where to save the model
               _eval_update=_eval_update,
               _test_update=_test_update)
