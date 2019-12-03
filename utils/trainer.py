@@ -31,13 +31,13 @@ class Trainer:
 
         saver.save(self.session, '{}/{}.ckpt'.format(directory, 'model'))
         pickle.dump(self.print, open('{}/{}.pkl'.format(directory, 'trainer'), 'wb'))
-        self.log('Model saved in {}!'.format(directory))
+        self.log('Model saved in {}'.format(directory))
 
     def load(self, directory):
         saver = tf.train.Saver()
         saver.restore(self.session, '{}/{}.ckpt'.format(directory, 'model'))
         self.print = pickle.load(open('{}/{}.pkl'.format(directory, 'trainer'), 'rb'))
-        self.log('Model loaded from {}!'.format(directory))
+        self.log('Model loaded from {}'.format(directory))
 
     def train(self, batch_dim, epochs, steps,
               train_fetch_dict, train_feed_dict,
@@ -150,7 +150,7 @@ class Trainer:
                     no_improvements += 1
                     self.load(directory)
                 elif min_epochs is not None and epoch >= min_epochs:
-                    self.log('No improvements after {} epochs!'.format(no_improvements))
+                    self.log('No improvements after {} epochs'.format(no_improvements))
                     break
 
                 if save_every is not None and epoch % save_every == 0:
