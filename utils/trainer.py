@@ -123,7 +123,12 @@ class Trainer:
                     output.update(_test_update(model, optimizer, batch_dim, test_batch))
 
                 p = pprint.PrettyPrinter(indent=1, width=80)
-                self.log('Test --> {}'.format(p.pformat(output)))
+                test_summary = 'Test --> {}'.format(p.pformat(output))
+                self.log(test_summary)
+                summary_path = os.path.join(directory, 'test_summary.txt')
+                self.log('Saving test summary statistics to {}'.format(summary_path), date=False)
+                with open(summary_path, 'w') as f:
+                    f.write(test_summary)
 
                 for k in output:
                     self.print['Test ' + k].append(output[k])
