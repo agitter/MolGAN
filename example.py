@@ -11,18 +11,19 @@ from models import encoder_rgcn, decoder_adj, decoder_dot, decoder_rnn
 
 from optimizers.gan import GraphGANOptimizer
 
+# Display defaults per https://stackoverflow.com/questions/12151306/argparse-way-to-include-default-values-in-help/18507871#18507871
 parser = argparse.ArgumentParser(description='MolGAN training parameters and data. Can be run using default parameters.')
-parser.add_argument("--batch-dim", type=int, default=128)
-parser.add_argument("--la", type=int, default=1)
-parser.add_argument("--dropout", type=float, default=0)
-parser.add_argument("--n-critic", type=int, default=5)
-parser.add_argument("--metric", type=str, default='validity,sas', help='See "reward" function for valid options.')
-parser.add_argument("--n-samples", type=int, default=5000)
-parser.add_argument("--z-dim", type=int, default=8)
-parser.add_argument("--epochs", type=int, default=10)
-parser.add_argument("--save-every", type=int, default=1)
-parser.add_argument("--output", type=str, default='./output')
-parser.add_argument("--data", type=str, default='data/gdb9_9nodes.sparsedataset')
+parser.add_argument("--batch-dim", type=int, default=128, help='(default: %(default)d)')
+parser.add_argument("--la", type=int, default=1, help='(default: %(default)d)')
+parser.add_argument("--dropout", type=float, default=0, help='(default: %(default)f)')
+parser.add_argument("--n-critic", type=int, default=5, help='(default: %(default)d)')
+parser.add_argument("--metric", type=str, default='validity,sas', help='see "reward" function for valid options (default: %(default)s)')
+parser.add_argument("--n-samples", type=int, default=5000, help='(default: %(default)d)')
+parser.add_argument("--z-dim", type=int, default=8, help='(default: %(default)d)')
+parser.add_argument("--epochs", type=int, default=10, help='(default: %(default)d)')
+parser.add_argument("--save-every", type=int, default=1, help='(default: %(default)d)')
+parser.add_argument("--output", type=str, default='./output', help='(default: %(default)s)')
+parser.add_argument("--data", type=str, default='data/gdb9_9nodes.sparsedataset', help='(default: %(default)s)')
 
 args = parser.parse_args()
 
@@ -230,3 +231,8 @@ trainer.train(batch_dim=batch_dim,
               directory=out_dir, # here users need to first create and then specify a folder where to save the model
               _eval_update=_eval_update,
               _test_update=_test_update)
+
+#final_samples = 10
+#mols = samples(data, model, session, model.sample_z(final_samples), sample=True
+#print(mols)
+
