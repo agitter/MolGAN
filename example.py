@@ -1,4 +1,5 @@
 import argparse
+import os
 import tensorflow as tf
 import numpy as np
 
@@ -19,6 +20,7 @@ parser.add_argument("--dropout", type=float, default=0, help='(default: %(defaul
 parser.add_argument("--n-critic", type=int, default=5, help='(default: %(default)d)')
 parser.add_argument("--metric", type=str, default='validity,sas', help='see "reward" function for valid options (default: %(default)s)')
 parser.add_argument("--n-samples", type=int, default=5000, help='(default: %(default)d)')
+parser.add_argument("--draw-samples", type=int, default=25, help='how many molecules to generate and draw from the final model (default: %(default)d)')
 parser.add_argument("--z-dim", type=int, default=8, help='(default: %(default)d)')
 parser.add_argument("--epochs", type=int, default=10, help='(default: %(default)d)')
 parser.add_argument("--save-every", type=int, default=1, help='(default: %(default)d)')
@@ -33,6 +35,7 @@ dropout = args.dropout
 n_critic = args.n_critic
 metric = args.metric
 n_samples = args.n_samples
+draw_samples = args.draw_samples
 z_dim = args.z_dim
 epochs = args.epochs
 save_every = args.save_every
@@ -232,7 +235,12 @@ trainer.train(batch_dim=batch_dim,
               _eval_update=_eval_update,
               _test_update=_test_update)
 
-#final_samples = 10
-#mols = samples(data, model, session, model.sample_z(final_samples), sample=True
-#print(mols)
-
+# Generate and draw molecules from the trained model
+mols = samples(data, model, session, model.sample_z(draw_samples), sample=True)
+mols = list(filter(None, mols))
+print('{} of {} generated molecules are valid'.format(len(mols), draw_samples))
+if len(mols) > 0:
+    img_path = os.path.join(out_dir, 'generated_molecules.png')
+    print('Saving generated molecule images to {}'.format(img_path))
+    mols_img = mols2grid_image(mols, 5)
+    mols_img.save(img_path)
