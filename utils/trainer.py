@@ -128,7 +128,7 @@ class Trainer:
                 summary_path = os.path.join(directory, 'test_summary.txt')
                 self.log('Saving test summary statistics to {}'.format(summary_path), date=False)
                 with open(summary_path, 'w') as f:
-                    f.write(test_summary)
+                    f.write(test_summary + '\n')
 
                 for k in output:
                     self.print['Test ' + k].append(output[k])
