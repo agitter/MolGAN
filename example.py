@@ -15,7 +15,7 @@ from optimizers.gan import GraphGANOptimizer
 # Display defaults per https://stackoverflow.com/questions/12151306/argparse-way-to-include-default-values-in-help/18507871#18507871
 parser = argparse.ArgumentParser(description='MolGAN training parameters and data. Can be run using default parameters.')
 parser.add_argument("--batch-dim", type=int, default=128, help='(default: %(default)d)')
-parser.add_argument("--la", type=int, default=1, help='(default: %(default)d)')
+parser.add_argument("--la", type=float, default=1, help='(default: %(default)f)')
 parser.add_argument("--dropout", type=float, default=0, help='(default: %(default)f)')
 parser.add_argument("--n-critic", type=int, default=5, help='(default: %(default)d)')
 parser.add_argument("--metric", type=str, default='validity,sas', help='see "reward" function for valid options (default: %(default)s)')
