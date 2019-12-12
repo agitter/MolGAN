@@ -39,7 +39,7 @@ draw_samples = args.draw_samples
 z_dim = args.z_dim
 epochs = args.epochs
 save_every = args.save_every
-out_dir = args.output
+out_dir = args.output.rstrip('/')
 
 data = SparseMolecularDataset()
 data.load(args.data)
